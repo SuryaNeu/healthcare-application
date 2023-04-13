@@ -1,0 +1,182 @@
+<!-- Page Banner -->
+<div class="page-banner-area item-bg3">
+    <div class="container">
+        <div class="page-banner-content">
+            <h2>Register</h2>
+            <ul>
+                <li><a routerLink="/">Home</a></li>
+                <li>Register</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- End Page Banner -->
+
+<!-- Register -->
+<section class="register-area ptb-100">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-12">
+                <div class="register-image">
+                    <img src="assets/img/register-form.png" alt="image">
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-12">
+                <div class="register-form">
+                    <h2>Register</h2>
+
+                    <form #registerForm="ngForm" (ngSubmit)="signupFunction()" novalidate>
+                        <div class="form-group mb-3">
+                            <label>First Name</label>
+                            <input type="text" [(ngModel)]="firstName" name="firstName" class="form-control"
+                                placeholder="First Name" required minlength="4" #firstNameModel="ngModel"
+                                pattern="^(?=.*[a-zA-Z].*[a-zA-Z].*[a-zA-Z].*[a-zA-Z])[a-zA-Z ]+$">
+                            <div *ngIf="firstNameModel.invalid && (firstNameModel.dirty || firstNameModel.touched)"
+                                style="color: red;">
+
+                                <div *ngIf="firstNameModel.errors?.['required']">
+                                    First Name is required.
+                                </div>
+                                <div *ngIf="firstNameModel.errors?.['minlength']">
+                                    First Name must be at least 4 characters long.
+                                </div>
+                                <div *ngIf="firstNameModel.errors?.['pattern']">
+                                    First Name should only be Alphabets.
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label>Last Name</label>
+                            <input type="text" [(ngModel)]="lastName" name="lastName" class="form-control"
+                                placeholder="Last Name" #lastNameModel="ngModel" required minlength="4"
+                                pattern="^(?=.*[a-zA-Z].*[a-zA-Z].*[a-zA-Z].*[a-zA-Z])[a-zA-Z ]+$">
+                            <div *ngIf="lastNameModel.invalid && (lastNameModel.dirty || lastNameModel.touched)"
+                                style="color: red;">
+
+                                <div *ngIf="lastNameModel.errors?.['required']">
+                                    Last Name is required.
+                                </div>
+                                <div *ngIf="lastNameModel.errors?.['minlength']">
+                                    Last Name must be at least 4 characters long.
+                                </div>
+                                <div *ngIf="lastNameModel.errors?.['pattern']">
+                                    Last Name should only be Alphabets.
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label>Phone Number</label>
+                            <input type="text" [(ngModel)]="mobileNumber" name="mobileNumber" class="form-control"
+                                placeholder="Phone Number" required #mobileNumberModel="ngModel"
+                                pattern="^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$">
+                        </div>
+                        <div *ngIf="mobileNumberModel.invalid && (mobileNumberModel.dirty || mobileNumberModel.touched)"
+                            style="color: red;">
+
+                            <div *ngIf="mobileNumberModel.errors?.['required']">
+                                Phone Number is required.
+                            </div>
+                            <div *ngIf="mobileNumberModel.errors?.['pattern']">
+                                Phone Number should follow US pattern - (123) 456-7890.
+                            </div>
+
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label>Email</label>
+                            <input type="email" [(ngModel)]="email" class="form-control" name="email"
+                                placeholder="Email" required #emailModel="ngModel"
+                                pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" (blur)="verify()">
+                            <div *ngIf="emailModel.invalid && (emailModel.dirty || emailModel.touched)"
+                                style="color: red;">
+
+                                <div *ngIf="emailModel.errors?.['required']">
+                                    Email is required.
+                                </div>
+                                <div *ngIf="emailModel.errors?.['pattern']">
+                                    Email should be in proper format.
+                                </div>
+
+                            </div>
+                            <div *ngIf="isLoading">
+                                <div class="spinner-border spinner-border-sm m-1" role="status">
+                                    <!-- <span class="sr-only">Loading...</span> -->
+                                </div>
+                                <small class="m-1">Checking email validity...</small>
+                            </div>
+                            <div style="color: red;" *ngIf="!isEmailDeliverable && !isLoading">
+                                Please enter a valid and deliverable email address.
+                            </div>
+                            <div style="color: rgb(47, 184, 47);"
+                                *ngIf="firstTrigger && isEmailDeliverable && !isLoading">
+                                Valid and deliverable email address.
+                            </div>
+                        </div>
+
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="form-check">
+                                    <input type="checkbox" [(ngModel)]="isDoctor" name="isDoctor"
+                                        class="form-check-input" id="checkme">
+                                    <label class="form-check-label" for="checkme">Registering as Doctor?</label>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="form-group mb-3">
+                            <label>Password</label>
+                            <input type="password" [(ngModel)]="password" class="form-control" name="password"
+                                placeholder="Password" required minlength="8" #passwordModel="ngModel"
+                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$">
+                            <div *ngIf="passwordModel.invalid && (passwordModel.dirty || passwordModel.touched)"
+                                style="color: red;">
+
+                                <div *ngIf="passwordModel.errors?.['required']">
+                                    Password is required.
+                                </div>
+                                <div *ngIf="passwordModel.errors?.['pattern']">
+                                    Password should be at least 8 characters, it should contain one number, one upper
+                                    case alphabet, one special character.
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label>Confirm Password</label>
+                            <input type="password" [(ngModel)]="confirmPassword" class="form-control"
+                                name="confirmPassword" placeholder="Confirm Password" required minlength="8"
+                                #confirmPasswordModel="ngModel"
+                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$">
+                            <div *ngIf="confirmPasswordModel.invalid && (confirmPasswordModel.dirty || confirmPasswordModel.touched)"
+                                style="color: red;">
+
+                                <div *ngIf="confirmPasswordModel.errors?.['required']">
+                                    Confirm Password is required.
+                                </div>
+                                <div *ngIf="confirmPasswordModel.errors?.['pattern']">
+                                    Confirm Password should be at least 8 characters, it should contain one number, one
+                                    upper
+                                    case alphabet, one special character.
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <p class="description">The password should be at least eight characters long. To make it
+                            stronger, use upper and lower case letters, numbers, and symbols like ! " ? $ % ^ & )</p>
+
+                        <button type="submit" class="default-btn" [disabled]="!registerForm.valid">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Register -->
