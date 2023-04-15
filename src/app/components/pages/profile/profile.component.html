@@ -1,0 +1,154 @@
+<!-- Page Banner -->
+<div class="page-banner-area item-bg4">
+    <div class="container">
+        <div class="page-banner-content">
+            <h2>Profile</h2>
+            <ul>
+                <li><a routerLink="/">Home</a></li>
+                <li>Profile</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- End Page Banner -->
+<!-- <h3 style="text-align: right; padding: 20px; margin-right: 20px;">
+</h3> -->
+<section class="pt-100">
+    <div class="container">
+        <div class="services-details-information">
+            <div class="download-file">
+                <div>
+                    <div *ngIf="!userInfo.isDoctor" class="contact-form"
+                        style="display: flex; justify-content: space-between; align-items: center; vertical-align: center;">
+                        <h3>Welcome {{userInfo.firstName + " "+ userInfo.lastName}}!</h3>
+                        <button type="submit" class="default-btn" routerLink="/profile/create">Create
+                            Appointments/Questions</button>
+                    </div>
+                </div>
+                <!-- <ul>
+                    <li><a routerLink="/profile/create" *ngIf="!userInfo.isDoctor">Click here to create Appointments and
+                            Questions</a></li>
+                    <li><a>Scroll down to view Appointments and Questions</a></li>
+                </ul> -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="appointment pt-100 pb-70">
+    <div class="container">
+
+        <div class="section-title text-width">
+            <span>Appointments</span>
+            <h2>Get complete view of your appointments</h2>
+            <div class="bar"></div>
+        </div>
+        <div class="row" *ngIf="appointmentDetails?.length > 0">
+            <div *ngFor="let app of appointmentDetails" class="col-lg-4 col-md-6">
+                <div class="services-details-information">
+                    <div class="services-contact-info" style="padding: 10px">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; vertical-align: middle;">
+                            <h3>Appointment Info</h3>
+                            <div>
+                                <button class="btn btn-danger" style="margin: 5px;"
+                                    (click)="deleteAppointment(app.id, app.doctorId, app.date)">{{userInfo.isDoctor ? 'Reject' : 'Delete'}}</button>
+                                <button *ngIf="!userInfo.isDoctor" class="btn btn-primary" style="margin: 5px;"
+                                    (click)="editAppointment(app.id)">Edit</button>
+                            </div>
+                        </div>
+
+                        <ul>
+                            <li>
+                                <span>Date:</span>
+                                {{app.date | date: 'medium'}}
+                            </li>
+                            <li>
+                                <span>Title:</span>
+                                {{app.title}}
+                            </li>
+                            <li>
+                                <span>{{userInfo.isDoctor ? 'Patient:' : 'Doctor:'}}</span>
+                                {{userInfo.isDoctor ? app.patientName : app.doctorName}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center;" *ngIf="!appointmentDetails || appointmentDetails?.length == 0">
+            <h6>{{userInfo.isDoctor ? 'No Appointments Received.' : 'No Appointments created. Go ahead and create one!'}}
+            </h6>
+        </div>
+    </div>
+</section>
+
+<section class="blog-area pt-70 pb-100">
+    <div class="container">
+        <div class="section-title">
+            <span>Questions</span>
+            <h2>{{userInfo.isDoctor ? 'Browse to Answer available Questions' : 'Browse through your questions'}}</h2>
+            <div class="bar"></div>
+        </div>
+        <h3>Un Answered Questions</h3>
+        <hr>
+        <div class="row" *ngIf="unansweredQuestionDetails?.length > 0">
+            <div *ngFor="let question of unansweredQuestionDetails" class="col-lg-6 col-md-6">
+                <div class="single-blog">
+                    <div class="content">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; vertical-align: middle;">
+                            <span>{{question.date | date: 'mediumDate'}}</span>
+                            <div>
+                                <button *ngIf="!userInfo.isDoctor" class="btn btn-danger" style="margin: 5px;"
+                                    (click)="deleteQuestion(question.id)">Delete</button>
+                                <button *ngIf="!userInfo.isDoctor" class="btn btn-primary" style="margin: 5px;"
+                                    (click)="editQuestion(question.id)">Edit</button>
+                            </div>
+                        </div>
+                        <h3>{{question.title}}
+                        </h3>
+                        <div class="contact-form" *ngIf="userInfo.isDoctor">
+                            <textarea class="form-control" [(ngModel)]="question.answer"
+                                name="question.answer"></textarea>
+                            <button type="submit" class="default-btn"
+                                (click)="editQuestionHere(question.id, question.title, question.answer, question.askedByName)">Answer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center;" *ngIf="!unansweredQuestionDetails || unansweredQuestionDetails?.length == 0">
+            <h6>{{userInfo.isDoctor ? 'No Questions Available.' : 'No Questions left unanswered. Kudos!'}}
+            </h6>
+        </div>
+        <br>
+        <h3>Answered Questions</h3>
+        <hr>
+        <div class="row" *ngIf="answeredQuestionDetails?.length > 0">
+            <div *ngFor="let question of answeredQuestionDetails" class="col-lg-6 col-md-6">
+                <div class="single-blog">
+                    <div class="content">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; vertical-align: middle;">
+                            <span>{{question.date | date: 'mediumDate'}}</span>
+                            <div>
+                                <button *ngIf="!userInfo.isDoctor" class="btn btn-danger" style="margin: 5px;"
+                                    (click)="deleteQuestion(question.id)">Delete</button>
+                            </div>
+                        </div>
+                        <h3>{{question.title}}
+                        </h3>
+                        <p>{{question.answer}}</p>
+                        <a
+                            class="blog-btn">{{userInfo.isDoctor ? 'Asked by ' + question.askedByName : 'Answered by ' + question.answeredByName}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center;" *ngIf="!answeredQuestionDetails || answeredQuestionDetails?.length == 0">
+            <h6>{{userInfo.isDoctor ? 'Not yet answered any Questions.' : 'No Questions are answered yet. Be Patient!'}}
+            </h6>
+        </div>
+    </div>
+</section>
