@@ -40,6 +40,10 @@ let userSchema = new Schema({
   isDoctor: {
     type: Boolean,
     default: false
+  },
+  isPremium: {
+    type: Boolean,
+    default: false
   }
 
 })
