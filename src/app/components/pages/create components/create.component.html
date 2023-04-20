@@ -1,0 +1,128 @@
+<!-- Page Banner -->
+<div class="page-banner-area item-bg4">
+    <div class="container">
+        <div class="page-banner-content">
+            <h2>Create Services</h2>
+            <ul>
+                <li><a routerLink="/">Home</a></li>
+                <li><a routerLink="/profile">Profile</a></li>
+                <li>Create</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- End Page Banner -->
+<h3 style="text-align: right; padding: 20px; margin-right: 20px;">Welcome
+    {{userInfo.firstName + " "+ userInfo.lastName}}!</h3>
+
+<section class="contact-area pb-100">
+    <div class="container">
+        <div class="section-title">
+            <span>Create Appointment</span>
+            <h2>Create new appointment below</h2>
+            <div class="bar"></div>
+        </div>
+
+        <div class="contact-form">
+            <form id="contactForm" #contactForm="ngForm" (ngSubmit)="postAppointment()" novalidate>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group mb-3">
+                            <label>Date and Time*</label>
+                            <input type="datetime-local" name="appointmentDate" id="appointmentDate"
+                                [(ngModel)]="appointmentDate" class="form-control" required
+                                #appointmentDateModel="ngModel">
+                            <div *ngIf="appointmentDateModel.invalid && (appointmentDateModel.dirty || appointmentDateModel.touched)"
+                                style="color: red;">
+
+                                <div *ngIf="appointmentDateModel.errors?.['required']">
+                                    Date is required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group mb-3">
+                            <label>Doctor Name*</label>
+                            <ng-select [items]="doctorDetails" bindLabel="firstName" bindValue="userId"
+                                [(ngModel)]="selectedDoctor" name="selectedDoctor" required
+                                #selectedDoctorModel="ngModel">
+                            </ng-select>
+                            <div *ngIf="selectedDoctorModel.invalid && (selectedDoctorModel.dirty || selectedDoctorModel.touched)"
+                                style="color: red;">
+
+                                <div *ngIf="selectedDoctorModel.errors?.['required']">
+                                    Doctor Name is required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12">
+                        <div class="form-group mb-3">
+                            <label>Your Subject*</label>
+                            <input type="text" name="appointmentTitle" [(ngModel)]="appointmentTitle"
+                                id="appointmentTitle" class="form-control" required minlength="4"
+                                #appointmentTitleModel="ngModel">
+                            <div *ngIf="appointmentTitleModel.invalid && (appointmentTitleModel.dirty || appointmentTitleModel.touched)"
+                                style="color: red;">
+
+                                <div *ngIf="appointmentTitleModel.errors?.['required']">
+                                    Title is required.
+                                </div>
+                                <div *ngIf="appointmentTitleModel.errors?.['minlength']">
+                                    Title should be atleast 4 characters.
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12">
+                        <button type="submit" class="default-btn" [disabled]="!contactForm.valid">Create</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="contact-area pb-100">
+    <div class="container">
+        <div class="section-title">
+            <span>Ask Question</span>
+            <h2>Ask a new Question below</h2>
+            <div class="bar"></div>
+        </div>
+
+        <div class="contact-form">
+            <form id="questionForm" #questionForm="ngForm" (ngSubmit)="postQuestion()" novalidate>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                        <div class="form-group mb-3">
+                            <label>Question*</label>
+                            <textarea type="text" name="questionTitle" [(ngModel)]="questionTitle" id="questionTitle"
+                                class="form-control" required minlength="10" #questionTitleModel="ngModel"></textarea>
+                            <div *ngIf="questionTitleModel.invalid && (questionTitleModel.dirty || questionTitleModel.touched)"
+                                style="color: red;">
+
+                                <div *ngIf="questionTitleModel.errors?.['required']">
+                                    Question is required.
+                                </div>
+                                <div *ngIf="questionTitleModel.errors?.['minlength']">
+                                    Question should be atleast 10 characters.
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12">
+                        <button type="submit" class="default-btn" [disabled]="!questionForm.valid">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
